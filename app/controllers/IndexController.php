@@ -1,10 +1,10 @@
 <?php
 
-class HomeController extends Controller
+class IndexController extends Controller
 {
     public function index()
     {
-        $home = $this->model('Home');
+        $home = $this->model('User');
 
         $this->view('home', ['title' => $home->title]);
     }

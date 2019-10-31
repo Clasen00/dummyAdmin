@@ -14,7 +14,7 @@ class App extends Base
      *
      * @var string
      */
-    protected $controller = 'HomeController';
+    protected $controller = 'IndexController';
 
     /**
      * The default method.
