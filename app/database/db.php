@@ -22,7 +22,7 @@ class DB extends DatabaseConfig
     /**
      * Подключение к БД
      */
-    public static function getDbh()
+    private static function getDbh()
     {
         if (!self::$dbh) {
             try {

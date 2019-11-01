@@ -1,7 +1,10 @@
 <?php
 
-class Controller extends Base
+namespace app\core;
+
+class Controller extends \app\core\Base
 {
+
     /**
      * Return a new instance of a model or throw an exception.
      *
@@ -35,7 +38,8 @@ class Controller extends Base
 
         if (is_readable('../app/views/pages/' . $view . '.php')) {
             require_once '../app/views/pages/' . $view . '.php';
-        } else {
+        }
+        else {
             $this->respondNotFound();
         }
     }

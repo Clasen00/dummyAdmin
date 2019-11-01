@@ -1,11 +1,15 @@
 <?php
 
+namespace app\controllers;
+
+use app\core\Controller;
+
 class IndexController extends Controller
 {
     public function index()
     {
-        $home = $this->model('User');
+        $user = $this->model('User');
 
-        $this->view('home', ['title' => $home->title]);
+        $this->view('home', ['title' => $user->title]);
     }
 }

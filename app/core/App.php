@@ -1,6 +1,8 @@
 <?php
 
-class App extends Base
+namespace app\core;
+
+class App extends \app\core\Base
 {
     /**
      * This is the URL used to fetch the controller, method and params.
@@ -8,21 +10,18 @@ class App extends Base
      * @var
      */
     protected $url;
-
     /**
      * The default controller.
      *
      * @var string
      */
     protected $controller = 'IndexController';
-
     /**
      * The default method.
      *
      * @var string
      */
     protected $method = 'index';
-
     /**
      * Params from the URI; default empty array.
      *
