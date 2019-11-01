@@ -1,0 +1,13 @@
+{
+    "name": "anarx/dummy-admin",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Eugene Shalaev",
+            "email": "shalaev@vcrt.ru"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
