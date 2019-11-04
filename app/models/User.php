@@ -27,7 +27,7 @@ class User extends DB {
     }
 
     public function setUser(array $userData): int {
-        $insert_id = DB::add("INSERT INTO `user` SET `name` = ?", ['name' => 'Eugene']);
+        $insert_id = DB::add("INSERT INTO `user` SET `name` = ?", ['name' => 'Eugene']); //подставить значения из post
 
         return $insert_id;
     }
