@@ -12,17 +12,17 @@
             <file>file:/C:/xampp/htdocs/dummyAdmin/app/core/Base.php</file>
             <file>file:/C:/xampp/htdocs/dummyAdmin/index.php</file>
             <file>file:/C:/xampp/htdocs/dummyAdmin/app/helpers.php</file>
-            <file>file:/C:/xampp/htdocs/dummyAdmin/README.md</file>
             <file>file:/C:/xampp/htdocs/dummyAdmin/composer.json</file>
+            <file>file:/C:/xampp/htdocs/dummyAdmin/vendor/autoload.php</file>
             <file>file:/C:/xampp/htdocs/dummyAdmin/app/models/User.php</file>
             <file>file:/C:/xampp/htdocs/dummyAdmin/vendor/composer/autoload_psr4.php</file>
             <file>file:/C:/xampp/htdocs/dummyAdmin/app/controllers/IndexController.php</file>
             <file>file:/C:/xampp/htdocs/dummyAdmin/app/database/db.php</file>
             <file>file:/C:/xampp/htdocs/dummyAdmin/app/views/partials/404.php</file>
-            <file>file:/C:/xampp/htdocs/dummyAdmin/LICENSE.md</file>
             <file>file:/C:/xampp/htdocs/dummyAdmin/app/views/pages/home.php</file>
             <file>file:/C:/xampp/htdocs/dummyAdmin/vendor/composer/autoload_real.php</file>
             <file>file:/C:/xampp/htdocs/dummyAdmin/vendor/composer/autoload_classmap.php</file>
+            <file>file:/C:/xampp/htdocs/dummyAdmin/.htaccess</file>
         </group>
     </open-files>
 </project-private>

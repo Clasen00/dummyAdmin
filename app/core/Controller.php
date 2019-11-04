@@ -14,9 +14,13 @@ class Controller extends \app\core\Base
      */
     public function model($model)
     {
-        if (is_readable('../app/models/' . $model . '.php')) {
-            require_once '../app/models/' . $model . '.php';
-
+        $file = str_replace('\\', '/', ROOT . '/dummyAdmin/app/models/' . $model . '.php');
+        
+        if (is_readable($file)) {
+            require_once $file;
+            
+            $model = 'app\\models\\' . $model;
+            
             return new $model();
         }
 
@@ -35,9 +39,11 @@ class Controller extends \app\core\Base
         $data['view'] = $view;
 
         extract($data);
+        
+        $file = str_replace('\\', '/', ROOT . '/dummyAdmin/app/views/pages/' . $view . '.php');
 
-        if (is_readable('../app/views/pages/' . $view . '.php')) {
-            require_once '../app/views/pages/' . $view . '.php';
+        if (is_readable($file)) {
+            require_once $file;
         }
         else {
             $this->respondNotFound();

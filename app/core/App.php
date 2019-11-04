@@ -59,9 +59,11 @@ class App extends \app\core\Base
      * @return array
      */
     private function parseUrl()
-    {
-        if (isset($_GET['url']) && !empty($_GET['url'])) {
-            return explode('/', filter_var($_GET['url'], FILTER_SANITIZE_URL));
+    {   
+        $requestGet = parse_url(rtrim(filter_input_array(INPUT_SERVER)['REQUEST_URI']));
+        
+        if (isset($requestGet) && !empty($requestGet)) {
+            return explode('/', $requestGet['path']);
         }
     }
 
@@ -70,18 +72,20 @@ class App extends \app\core\Base
      */
     private function setController()
     {
-        $path = '../app/controllers/' . $this->url[0] . 'Controller.php';
-
+        array_shift($this->url);
+        
+        $path = str_replace('\\', '/', ROOT . '/dummyAdmin/app/controllers/' . $this->url[0] . 'Controller.php');
+        
         if (file_exists($path)) {
-            $this->controller = $this->url[0] . 'Controller';
+            $this->controller = 'app\\controllers\\' . $this->url[0] . 'Controller';
             unset($this->url[0]);
         }
         else if (!file_exists($path) && !empty($this->url[0])) {
             $this->respondNotFound();
         }
 
-        require_once '../app/controllers/' . $this->controller . '.php';
-
+        require_once $path;
+        
         $this->controller = new $this->controller();
     }
 
@@ -106,6 +110,8 @@ class App extends \app\core\Base
      */
     private function setParams()
     {
-        $this->params = $this->url ? [array_values($this->url), $_POST] : [$_POST];
+        $postRequest = filter_input_array(INPUT_POST);
+        
+        $this->params = $this->url ? [array_values($this->url), $postRequest] : [$postRequest];
     }
 }
