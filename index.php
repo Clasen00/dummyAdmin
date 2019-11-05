@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 define('ROOT', dirname(__DIR__));
 define('PROJECT', dirname(__DIR__) . '/dummyAdmin');

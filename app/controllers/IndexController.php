@@ -6,16 +6,16 @@ use app\core\Controller;
 
 class IndexController extends Controller
 {
+
     public function index()
-    {
+    {//TODO после успешного логина перекидывать на photos
         $user = $this->model('User');
-        
-        $postRequest = filter_input_array(INPUT_POST);
-        
-        if ($postRequest) {
-            $user->setUser($postRequest);
-        }
 
         $this->view('home', ['title' => $user->login()]);
+    }
+
+    public function getUserInfo() 
+    {
+        var_dump($_POST); exit;
     }
 }

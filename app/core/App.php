@@ -59,7 +59,7 @@ class App extends \app\core\Base
      * @return array
      */
     private function parseUrl()
-    {   
+    {
         $requestGet = parse_url(rtrim(filter_input_array(INPUT_SERVER)['REQUEST_URI']));
         
         if (isset($requestGet) && !empty($requestGet)) {
@@ -73,6 +73,10 @@ class App extends \app\core\Base
     private function setController()
     {
         array_shift($this->url);
+        
+        if (empty($this->url[0])) {
+            $this->url[0] = 'index';
+        }
         
         $path = str_replace('\\', '/', ROOT . '/dummyAdmin/app/controllers/' . $this->url[0] . 'Controller.php');
         

@@ -6,7 +6,7 @@ To run it just add something like this in your xampp\apache\conf\extra:
 # Dummy admin for farpost
 <VirtualHost dummyadmin:80>
     ServerAdmin admin.ru
-    DocumentRoot "C:\xampp\htdocs\dummyadmin\web\index.php"
+    DocumentRoot "C:\xampp\htdocs\dummyadmin\index.php"
     ServerName dummyadmin
     ServerAlias www.dummyadmin.loc
     ErrorLog "logs/dummyadmin.loc.log"
