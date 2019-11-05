@@ -16,19 +16,20 @@
 
             <div class="tabs-content">
                 <div id="signup-tab-content" class="active">
-                    <form class="signup-form" id="signup-form" action="index/get-user-info" method="post" name="reg-form">
-                        <input type="email" class="input" id="user_email" autocomplete="off" placeholder="Эл. адрес">
-                        <input type="text" class="input" id="first-name" autocomplete="off" placeholder="Имя">
-                        <input type="text" class="input" id="second-name" autocomplete="off" placeholder="Фамилия">
-                        <input type="password" class="input" id="password" autocomplete="off" placeholder="Пароль">
+                    <form class="auth-form" action="" method="post" name="auth-form">
+                        <input type="email" class="input" id="user_email" placeholder="Эл. адрес" name="email">
+                        <input type="text" class="input" id="first-name" placeholder="Имя" name="first-name">
+                        <input type="text" class="input" id="second-name" placeholder="Фамилия" name="second-name">
+                        <input type="password" class="input" id="password" autocomplete="off" placeholder="Пароль" name="password">
+                        
                         <input type="submit" class="button" value="Регистрация">
                     </form><!--.login-form-->
                 </div><!--.signup-tab-content-->
 
                 <div id="login-tab-content">
                     <form class="login-form" action="" method="post" name="login-form">
-                        <input type="text" class="input" id="user_login" autocomplete="off" placeholder="Эл. адрес" name="email">
-                        <input type="password" class="input" id="user_pass" autocomplete="off" placeholder="Пароль" name="password">
+                        <input type="text" class="input" id="user_login" placeholder="Эл. адрес" name="email">
+                        <input type="password" class="input" id="user_pass" placeholder="Пароль" name="password">
                         <input type="checkbox" class="checkbox" id="remember_me" name='remember'>
                         <label for="remember_me">Запомнить меня</label>
 
