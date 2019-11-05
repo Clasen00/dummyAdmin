@@ -60,10 +60,10 @@ class App extends \app\core\Base
      */
     private function parseUrl()
     {
-        $requestGet = parse_url(rtrim(filter_input_array(INPUT_SERVER)['REQUEST_URI']));
+        $requestUri = parse_url(rtrim(filter_input_array(INPUT_SERVER)['REQUEST_URI']));
         
-        if (isset($requestGet) && !empty($requestGet)) {
-            return explode('/', $requestGet['path']);
+        if (isset($requestUri) && !empty($requestUri)) {
+            return explode('/', str_replace('.php', '', $requestUri['path']));
         }
     }
 
