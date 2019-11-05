@@ -1,15 +1,25 @@
-Options -MultiViews
+Options -Indexes
 
 RewriteEngine On
+RewriteBase /
 
-# Redirect Trailing Slashes If Not A Folder...
-# Ex: 'foo/bar/' becomes 'foo/bar'. This removes the
-# need to trim the url in our code to remove trailing slash.
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)/$ /$1 [L,R=301]
+Options -MultiViews
 
+# Если запрос содержит в конце слеш или расширение .php, то
+# делает редирект без них. Но только для тех запросов, которым 
+# не соотествуют на ФС файл, папка или ссылка  ---> 
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-l
+RewriteCond %{REQUEST_URI} ^(.+)(\.php|/)$ [NC]
+RewriteRule .* %1 [L,R=301]
+# <---
 
+# Запросы, для которых нет на ФС папки, файла или ссылки, переписываем 
+# в запрос к index.php, с оригинальным request_uri в качестве аргумента 
+# параметра url --->
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-l
 RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
+# <---
