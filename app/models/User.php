@@ -15,6 +15,11 @@ use app\database\DB;
 class User extends DB {
 
     public $title = 'User model';
+    
+    public $email;
+    public $firstName;
+    public $secondName;
+    public $password;
 
     public function login(): string {
         return 'You have been successfully logged!';
@@ -26,10 +31,33 @@ class User extends DB {
         return $user;
     }
 
-    public function setUser(array $userData): int {
-        $insert_id = DB::add("INSERT INTO `user` SET `name` = ?", ['name' => 'Eugene']); //подставить значения из post
+    public function setUser(): int {
+        $insertUserId = DB::add("INSERT INTO `user` SET `first-name` = ?, `second-name` = ?, `email` = ?, `password` = ?", ['first-name' => $this->firstName, 'second-name' => $this->secondName, 'email' => $this->email, 'password' => $this->password]);
 
-        return $insert_id;
+        return $insertUserId;
+    }
+
+    public function validateUser(array $userData) {
+        
+        $validated = [];
+        $validated['isValidated'] = true;
+        
+        if (!$userData['email']) {
+            $validated['isValidated'] = false;
+            $validated['message'] = "Введите пароль";
+        }
+
+        if (!$userData['first-name']) {
+            $validated['isValidated'] = false;
+            $validated['Введите имя'] = "Введите пароль";
+        }
+
+        if (!$userData['password']) {
+            $validated['isValidated'] = false;
+            $validated['message'] = "Пароль";
+        }
+        
+        return $validated;
     }
 
 }
