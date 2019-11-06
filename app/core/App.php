@@ -61,7 +61,7 @@ class App extends \app\core\Base
     private function parseUrl()
     {
         $requestUri = parse_url(rtrim(filter_input_array(INPUT_SERVER)['REQUEST_URI']));
-        
+         
         if (isset($requestUri) && !empty($requestUri)) {
             return explode('/', str_replace('.php', '', $requestUri['path']));
         }

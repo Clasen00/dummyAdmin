@@ -8,9 +8,10 @@ use app\database\DB;
  * This is the model class for table "User".
  *
  * @property integer $id
- * @property string $id_ancestor
- * @property string $id_region
- * @property integer $macroreg
+ * @property string $first_name
+ * @property string $second_name
+ * @property integer $email
+ * @property integer $password
  */
 class User extends DB {
 
@@ -26,20 +27,22 @@ class User extends DB {
     }
 
     public function getUser(int $userId): array {
-        $user = DB::getRow("SELECT * FROM `user` WHERE `id` = :id", ['id' => 1]);
+        $user = DB::getRow("SELECT * FROM `user` WHERE `id` = :id", ['id' => $userId]);
 
         return $user;
     }
 
     public function setUser(): int {
-        $insertUserId = DB::add("INSERT INTO `user` SET `first-name` = ?, `second-name` = ?, `email` = ?, `password` = ?", ['first-name' => $this->firstName, 'second-name' => $this->secondName, 'email' => $this->email, 'password' => $this->password]);
-
+        
+        $insertUserId = DB::add("INSERT INTO `user` SET `first_name` = :first_name, `second_name` = :second_name, `email` = :email, `password` = :password", ['first_name' => $this->firstName, 'second_name' => $this->secondName, 'email' => $this->email, 'password' => $this->password]);
+        
         return $insertUserId;
     }
 
     public function validateUser(array $userData) {
         
         $validated = [];
+        $validated['message'] = "Вы успешно зарегистрировались";
         $validated['isValidated'] = true;
         
         if (!$userData['email']) {
@@ -58,6 +61,23 @@ class User extends DB {
         }
         
         return $validated;
+    }
+    
+    public function getRegisteredUser(): array {
+        $user = DB::getRow("SELECT * FROM `user` WHERE `email` = :email AND `password` = :password", ['email' => $this->email, 'password' => $this->password]);
+
+        return $user;
+    }
+    
+    public function registrationUser(array $userFromData):int
+    {
+        $user->firstName = $userFromData['first-name'];
+        $user->secondName = $userFromData['second-name'];
+        $user->email = $userFromData['email'];
+        $user->password = $userFromData['password'];
+        $userId = $this->setUser();
+        
+        return $userId;
     }
 
 }

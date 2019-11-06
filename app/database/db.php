@@ -2,6 +2,7 @@
 
 namespace app\database;
 
+use PDO;
 use app\database\DatabaseConfig;
 
 class DB extends DatabaseConfig
@@ -45,10 +46,15 @@ class DB extends DatabaseConfig
     /**
      * Добавление в таблицу, в случаи успеха вернет вставленный ID, иначе 0.
      */
-    public static function add($query, $param = array())
+    public static function add($query, $param = array()): string
     {
-        self::$sth = self::getDbh()->prepare($query);
-        return (self::$sth->execute((array) $param)) ? self::getDbh()->lastInsertId() : 0;
+        try {
+            self::$sth = self::getDbh()->prepare($query);
+        }
+        catch (Exception $exc) {
+            echo $exc->getTraceAsString();
+        }
+        return (self::$sth->execute((array) $param)) ? self::getDbh()->lastInsertId() : '0';
     }
 
     /**
@@ -63,7 +69,7 @@ class DB extends DatabaseConfig
     /**
      * Получение строки из таблицы.
      */
-    public static function getRow($query, $param = array())
+    public static function getRow($query, $param = array()): array
     {
         self::$sth = self::getDbh()->prepare($query);
         self::$sth->execute((array) $param);
