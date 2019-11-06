@@ -12,6 +12,7 @@ class IndexController extends Controller
 
     public function index()
     {
+
         $user = $this->model('User');
 
         $userId = filter_input(INPUT_COOKIE, $userId);
@@ -34,14 +35,15 @@ class IndexController extends Controller
 
     public function registerUser()
     {
-
         $user = $this->model('User');
-
-        $requestPost = filter_input_array(INPUT_POST);
+        
+        $apiRequestArray = json_decode(trim(file_get_contents('php://input')), true);
+        $requestPost = filter_var_array($apiRequestArray);
+        
         $validetedData = $user->validateUser($requestPost);
-
+        
         if ($validetedData['isValidated'] !== true) {
-            return json_encode($validetedData);
+            die(json_encode($validetedData));
         }
         
         $userId = $user->registrationUser($requestPost);
@@ -50,7 +52,7 @@ class IndexController extends Controller
         $this->setUserCookie($userId, $this->secondsInDay);
         $this->setUserSession($userId);
         
-        return json_encode($validetedData);
+        die(json_encode($validetedData));
     }
 
     protected function setUserSession(int $userId)

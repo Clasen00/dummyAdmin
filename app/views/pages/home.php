@@ -18,19 +18,20 @@
             <div class="tabs-content">
                 <div id="signup-tab-content" class="active">
                     <form class="auth-form" id="regForm" action="/index/registerUser" method="post" name="auth-form">
-                        <input type="email" required="" class="input" id="user_email" placeholder="Эл. адрес" name="email">
-                        <input type="text" required class="input" id="first-name" placeholder="Имя" name="first-name">
-                        <input type="text" class="input" id="second-name" placeholder="Фамилия" name="second-name">
+                        <input type="email" required="" autocomplete="email" class="input" id="user_email" placeholder="Эл. адрес" name="email">
+                        <input type="text" required autocomplete="firstName" class="input" id="first-name" placeholder="Имя" name="firstName">
+                        <input type="text" class="input" autocomplete="secondName" id="second-name" placeholder="Фамилия" name="secondName">
                         <input type="password" required class="input" id="password" autocomplete="off" placeholder="Пароль" name="password">
                         
                         <input id="regUser" type="submit" class="button" value="Регистрация">
                     </form><!--.login-form-->
+                    <div id="regFormEmpty" class="form-warning hidden">Пожалуйста, заполните форму регистрации!</div>
                 </div><!--.signup-tab-content-->
 
                 <div id="login-tab-content">
                     <form class="login-form" id="authForm" action="index/authUser" method="post" name="login-form">
-                        <input type="text" required class="input" id="user_login" placeholder="Эл. адрес" name="email">
-                        <input type="password" required class="input" id="user_pass" placeholder="Пароль" name="password">
+                        <input type="text" autocomplete="email" required class="input" id="user_login" placeholder="Эл. адрес" name="email">
+                        <input type="password" required autocomplete="current_password" class="input" id="user_pass" placeholder="Пароль" name="password">
                         <input type="checkbox" class="checkbox" id="remember_me" name='remember'>
                         <label for="remember_me">Запомнить меня</label>
 
@@ -38,6 +39,7 @@
                     </form><!--.login-form-->
                 </div><!--.login-tab-content-->
             </div><!--.tabs-content-->
+            <div id="authFormEmpty" class="form-warning hidden">Пожалуйста, заполните форму авторизации!</div>
         </div><!--.form-wrap-->
          <script type="text/javascript">
              <?= file_get_contents(ROOT . '/dummyAdmin/web/js/auth.js'); ?>
