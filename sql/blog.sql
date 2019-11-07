@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 01, 2019 at 06:40 AM
+-- Generation Time: Nov 07, 2019 at 01:06 AM
 -- Server version: 10.4.6-MariaDB
 -- PHP Version: 7.3.9
 
@@ -21,6 +21,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `blog`
 --
+CREATE DATABASE IF NOT EXISTS `blog` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `blog`;
 
 -- --------------------------------------------------------
 
@@ -110,12 +112,6 @@ ALTER TABLE `user`
 ALTER TABLE `article`
   ADD CONSTRAINT `get_photos` FOREIGN KEY (`photos_id`) REFERENCES `photos` (`article_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `get_user` FOREIGN KEY (`author_id`) REFERENCES `user` (`id`);
-
---
--- Constraints for table `user`
---
-ALTER TABLE `user`
-  ADD CONSTRAINT `get_articles` FOREIGN KEY (`id`) REFERENCES `article` (`author_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
