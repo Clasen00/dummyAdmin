@@ -48,16 +48,19 @@ class User extends DB {
         if (!$userData['email']) {
             $validated['isValidated'] = false;
             $validated['message'] = "Введите пароль";
+            return $validated;
         }
 
-        if (!$userData['first-name']) {
+        if (!$userData['firstName']) {
             $validated['isValidated'] = false;
-            $validated['Введите имя'] = "Введите пароль";
+            $validated['message'] = "Введите пароль";
+            return $validated;
         }
 
         if (!$userData['password']) {
             $validated['isValidated'] = false;
             $validated['message'] = "Пароль";
+            return $validated;
         }
         
         return $validated;
@@ -71,8 +74,8 @@ class User extends DB {
     
     public function registrationUser(array $userFromData):int
     {
-        $user->firstName = $userFromData['first-name'];
-        $user->secondName = $userFromData['second-name'];
+        $user->firstName = $userFromData['firstName'];
+        $user->secondName = $userFromData['secondName'];
         $user->email = $userFromData['email'];
         $user->password = $userFromData['password'];
         $userId = $this->setUser();

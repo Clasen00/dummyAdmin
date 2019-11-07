@@ -2,3 +2,5 @@
 app/database/databaseConfig.php
 
 /vendor/
+
+nbproject/private/

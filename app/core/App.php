@@ -48,8 +48,19 @@ class App extends \app\core\Base
         $this->setMethod();
 
         $this->setParams();
+        
+        if (class_exists($this->controller)) {
+            $controllerObject = new $this->controller();
+            if (method_exists($controllerObject, $this->method)) {
+                call_user_func_array([$controllerObject, $this->method], $this->params);
+            } else {
+                $this->respondNotFound();
+            }
+        } else {
+            $this->respondNotFound();
+        }
 
-        call_user_func_array([$this->controller, $this->method], $this->params);
+        
     }
 
     /**
@@ -60,10 +71,11 @@ class App extends \app\core\Base
      */
     private function parseUrl()
     {
-        $requestUri = parse_url(rtrim(filter_input_array(INPUT_SERVER)['REQUEST_URI']));
-         
+        $requestUri = rtrim(filter_input_array(INPUT_SERVER)['REQUEST_URI']);
+        $requestMethod = filter_input_array(INPUT_SERVER)['REQUEST_METHOD'];
+        
         if (isset($requestUri) && !empty($requestUri)) {
-            return explode('/', str_replace('.php', '', $requestUri['path']));
+            return explode('/', str_replace('.php', '', $requestUri));
         }
     }
 
@@ -89,8 +101,6 @@ class App extends \app\core\Base
         }
 
         require_once $path;
-        
-        $this->controller = new $this->controller();
     }
 
     /**
