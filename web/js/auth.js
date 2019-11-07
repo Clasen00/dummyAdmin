@@ -45,7 +45,11 @@ document.addEventListener("DOMContentLoaded", () => {
             .then((json) => {
               const responseMessage = json[0].message
               const responseIsValidated = json[0].isValidated
-              
+              if (responseIsValidated) {
+                  window.location.href = "http://dummyadmin/index";
+              } else {
+                  noticeUser(responseMessage);
+              }
             })
         });
         
@@ -104,5 +108,10 @@ document.addEventListener("DOMContentLoaded", () => {
         return JSON.stringify({email: authForm.email.value, password: authForm.password.value});
     }
 
+    function noticeUser(message) {
+        var regFormNotFull = document.getElementById('regFormNotFull');
+        regFormNotFull.innerHTML = message;
+        regFormNotFull.classList.remove('hidden');
+    }
 });
 

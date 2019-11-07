@@ -26,6 +26,10 @@
                         <input id="regUser" type="submit" class="button" value="Регистрация">
                     </form><!--.login-form-->
                     <div id="regFormEmpty" class="form-warning hidden">Пожалуйста, заполните форму регистрации!</div>
+                    <div id="regFormNotFull" class="form-warning hidden"></div>
+                    <?php if($dontRegisterd): ?>
+                        <div id="regFormEmpty" class="form-warning">Что то пошло не так во время регистрации, попробуйте еще раз!</div>
+                    <?php endif; ?>
                 </div><!--.signup-tab-content-->
 
                 <div id="login-tab-content">

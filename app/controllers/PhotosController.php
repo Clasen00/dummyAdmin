@@ -10,6 +10,8 @@ class PhotosController extends Controller
     {
         $user = $this->model('User');
         
+        var_dump($_SESSION); exit;
+        
         $this->view('photo', ['title' => $user->login()]);
     }
 }
