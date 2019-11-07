@@ -5,7 +5,7 @@
         <title>DummyAdmin</title>
         <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, width=device-width">
         <style>
-            <?= file_get_contents(ROOT . '/dummyAdmin/web/css/main.css'); ?>
+            <?= file_get_contents(PROJECT . '/web/css/main.css'); ?>
         </style>
     </head>
     <body>

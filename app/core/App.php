@@ -52,13 +52,14 @@ class App extends \app\core\Base
         if (class_exists($this->controller)) {
             $controllerObject = new $this->controller();
             if (method_exists($controllerObject, $this->method)) {
-                call_user_func_array([$controllerObject, $this->method], $this->params);
+                echo call_user_func_array([$controllerObject, $this->method], $this->params);
             } else {
                 $this->respondNotFound();
             }
         } else {
             $this->respondNotFound();
         }
+        
     }
 
     /**

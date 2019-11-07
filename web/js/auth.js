@@ -32,27 +32,25 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById('regFormEmpty').classList.add('hidden');
             var formData = getRegFormData(regForm);
         }
-        console.log(formData);
 
-        try {
-            let response = fetch('/index/register', {
-                method: 'POST',
-                mode: 'cors',
-                cache: 'no-cache',
-                credentials: 'same-origin',
-                redirect: 'follow',
-                referrer: 'no-referrer',
-                body: formData,
+        let response = fetch('/index/register', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+            },
+            body: formData,
+        })
+        .then((response) => {
+          response.json()
+            .then((json) => {
+              const responseMessage = json[0].message
+              const responseIsValidated = json[0].isValidated
+              
             })
-                .then(response => response.json());
-
-            console.log(response);
-        } catch (error) {
-            console.error('Ошибка:', error);
-        }
-
+        });
+        
     });
-
+    
     authUserBtn.addEventListener('click', function (event) {
         event.preventDefault();
 
@@ -98,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
         formData.append('firstName', regForm.firstName.value);
         formData.append('secondName', regForm.secondName.value);
         formData.append('password', regForm.password.value);
-        
+
         return formData;
     }
 

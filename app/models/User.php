@@ -22,24 +22,28 @@ class User extends DB {
     public $secondName;
     public $password;
 
-    public function login(): string {
+    public function login(): string
+    {
         return 'You have been successfully logged!';
     }
 
-    public function getUser(int $userId): array {
+    public function getUser(int $userId): array
+    {
         $user = DB::getRow("SELECT * FROM `user` WHERE `id` = :id", ['id' => $userId]);
 
         return $user;
     }
 
-    public function setUser(): int {
-        
+    public function setUser(): int
+    {
+
         $insertUserId = DB::add("INSERT INTO `user` SET `first_name` = :first_name, `second_name` = :second_name, `email` = :email, `password` = :password", ['first_name' => $this->firstName, 'second_name' => $this->secondName, 'email' => $this->email, 'password' => $this->password]);
         
         return $insertUserId;
     }
 
-    public function validateUser(array $userData) {
+    public function validateUser(array $userData)
+    {
         
         $validated = [];
         $validated['message'] = "Вы успешно зарегистрировались";
@@ -47,26 +51,23 @@ class User extends DB {
         
         if (!$userData['email']) {
             $validated['isValidated'] = false;
-            $validated['message'] = "Введите пароль";
+            $validated['message'] = "Введите электронную почту";
             return $validated;
-        }
-
-        if (!$userData['firstName']) {
+        } elseif (!$userData['firstName']) {
+            $validated['isValidated'] = false;
+            $validated['message'] = "Введите имя";
+            return $validated;
+        } elseif (!$userData['password']) {
             $validated['isValidated'] = false;
             $validated['message'] = "Введите пароль";
-            return $validated;
-        }
-
-        if (!$userData['password']) {
-            $validated['isValidated'] = false;
-            $validated['message'] = "Пароль";
             return $validated;
         }
         
         return $validated;
     }
     
-    public function getRegisteredUser(): array {
+    public function getRegisteredUser(): array
+    {
         $user = DB::getRow("SELECT * FROM `user` WHERE `email` = :email AND `password` = :password", ['email' => $this->email, 'password' => $this->password]);
 
         return $user;
@@ -74,10 +75,11 @@ class User extends DB {
     
     public function registrationUser(array $userFromData):int
     {
-        $user->firstName = $userFromData['firstName'];
-        $user->secondName = $userFromData['secondName'];
-        $user->email = $userFromData['email'];
-        $user->password = $userFromData['password'];
+        $this->firstName = $userFromData['firstName'];
+        $this->secondName = $userFromData['secondName'];
+        $this->email = $userFromData['email'];
+        $this->password = $userFromData['password'];
+        
         $userId = $this->setUser();
         
         return $userId;

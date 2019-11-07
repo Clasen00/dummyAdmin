@@ -12,7 +12,6 @@ class IndexController extends Controller
 
     public function index()
     {
-
         $user = $this->model('User');
 
         $userId = filter_input(INPUT_COOKIE, $userId);
@@ -42,10 +41,8 @@ class IndexController extends Controller
         $validetedData = $user->validateUser($requestPost);
         
         if ($validetedData['isValidated'] !== true) {
-            
             return json_encode([$validetedData]);
         }
-        
         $userId = $user->registrationUser($requestPost);
         
         $this->setIsAuth(true);
@@ -95,7 +92,7 @@ class IndexController extends Controller
             }
         }
 
-        $this->index();
+        return json_encode([$authorizedUser]);
     }
 
     protected function setUserCookie(int $userId, int $cookieExpiredTime)
