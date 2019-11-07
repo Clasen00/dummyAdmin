@@ -16,7 +16,7 @@ class IndexController extends Controller
         $user = $this->model('User');
         
         $dontRegisterd = false;
-
+        
         $userId = filter_input(INPUT_COOKIE, 'userId');
         
         if (!empty($userId)) {
@@ -60,8 +60,8 @@ class IndexController extends Controller
 
     public function setUserSession(int $userId)
     {//TODO многомерный массив
-        if (!isset($_SESSION['userId'])) $_SESSION['userId'] = $userId;
-        if (!isset($_SESSION['loggedin'])) $_SESSION['loggedin'] = $this->isAuth;
+        if (!isset($_SESSION['userSession']['userId'])) $_SESSION['userSession']['userId'] = $userId;
+        if (!isset($_SESSION['userSession']['loggedin'])) $_SESSION['userSession']['loggedin'] = $this->isAuth;
     }
 
     public function getIsAuth(): bool
