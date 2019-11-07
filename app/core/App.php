@@ -59,8 +59,6 @@ class App extends \app\core\Base
         } else {
             $this->respondNotFound();
         }
-
-        
     }
 
     /**
@@ -72,7 +70,6 @@ class App extends \app\core\Base
     private function parseUrl()
     {
         $requestUri = rtrim(filter_input_array(INPUT_SERVER)['REQUEST_URI']);
-        $requestMethod = filter_input_array(INPUT_SERVER)['REQUEST_METHOD'];
         
         if (isset($requestUri) && !empty($requestUri)) {
             return explode('/', str_replace('.php', '', $requestUri));
@@ -90,7 +87,7 @@ class App extends \app\core\Base
             $this->url[0] = 'index';
         }
         
-        $path = str_replace('\\', '/', ROOT . '/dummyAdmin/app/controllers/' . $this->url[0] . 'Controller.php');
+        $path = str_replace('\\', '/', APP . '/controllers/' . $this->url[0] . 'Controller.php');
         
         if (file_exists($path)) {
             $this->controller = 'app\\controllers\\' . $this->url[0] . 'Controller';

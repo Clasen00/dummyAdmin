@@ -30,20 +30,16 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         } else {
             document.getElementById('regFormEmpty').classList.add('hidden');
-            var formData = getRegFormToJson(regForm);
+            var formData = getRegFormData(regForm);
         }
+        console.log(formData);
 
         try {
-
-            // Значения по умолчанию обозначены знаком *
-            let response = fetch('/index/registerUser', {
+            let response = fetch('/index/register', {
                 method: 'POST',
                 mode: 'cors',
                 cache: 'no-cache',
                 credentials: 'same-origin',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
                 redirect: 'follow',
                 referrer: 'no-referrer',
                 body: formData,
@@ -96,8 +92,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 && !formData.password.value;
     }
 
-    function getRegFormToJson(regForm) {
-        return JSON.stringify({email: regForm.email.value, firstName: regForm.firstName.value, secondName: regForm.secondName.value, password: regForm.password.value});
+    function getRegFormData(regForm) {
+        var formData = new FormData();
+        formData.append('email', regForm.email.value);
+        formData.append('firstName', regForm.firstName.value);
+        formData.append('secondName', regForm.secondName.value);
+        formData.append('password', regForm.password.value);
+        
+        return formData;
     }
 
     function getAuthFormToJson(authForm) {

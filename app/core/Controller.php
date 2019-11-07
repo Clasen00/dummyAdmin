@@ -14,7 +14,7 @@ class Controller extends \app\core\Base
      */
     public function model($model)
     {
-        $file = str_replace('\\', '/', ROOT . '/dummyAdmin/app/models/' . $model . '.php');
+        $file = str_replace('\\', '/', APP . '/models/' . $model . '.php');
         
         if (is_readable($file)) {
             require_once $file;
@@ -40,7 +40,7 @@ class Controller extends \app\core\Base
 
         extract($data);
         
-        $file = str_replace('\\', '/', ROOT . '/dummyAdmin/app/views/pages/' . $view . '.php');
+        $file = str_replace('\\', '/', APP . '/views/pages/' . $view . '.php');
 
         if (is_readable($file)) {
             require_once $file;

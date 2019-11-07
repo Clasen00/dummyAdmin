@@ -17,10 +17,10 @@
 
             <div class="tabs-content">
                 <div id="signup-tab-content" class="active">
-                    <form class="auth-form" id="regForm" action="/index/registerUser" method="post" name="auth-form">
-                        <input type="email" required="" autocomplete="email" class="input" id="user_email" placeholder="Эл. адрес" name="email">
-                        <input type="text" required autocomplete="firstName" class="input" id="first-name" placeholder="Имя" name="firstName">
-                        <input type="text" class="input" autocomplete="secondName" id="second-name" placeholder="Фамилия" name="secondName">
+                    <form class="auth-form" id="regForm" method="post" name="reg-form">
+                        <input type="email" required="" autocomplete="on" class="input" id="user_email" placeholder="Эл. адрес" name="email">
+                        <input type="text" required autocomplete="on" class="input" id="first-name" placeholder="Имя" name="firstName">
+                        <input type="text" class="input" autocomplete="on" id="second-name" placeholder="Фамилия" name="secondName">
                         <input type="password" required class="input" id="password" autocomplete="off" placeholder="Пароль" name="password">
                         
                         <input id="regUser" type="submit" class="button" value="Регистрация">
@@ -29,9 +29,9 @@
                 </div><!--.signup-tab-content-->
 
                 <div id="login-tab-content">
-                    <form class="login-form" id="authForm" action="index/authUser" method="post" name="login-form">
-                        <input type="text" autocomplete="email" required class="input" id="user_login" placeholder="Эл. адрес" name="email">
-                        <input type="password" required autocomplete="current_password" class="input" id="user_pass" placeholder="Пароль" name="password">
+                    <form class="login-form" id="authForm" method="post" name="login-form">
+                        <input type="text" autocomplete="on" required class="input" id="user_login" placeholder="Эл. адрес" name="email">
+                        <input type="password" required autocomplete="on" class="input" id="user_pass" placeholder="Пароль" name="password">
                         <input type="checkbox" class="checkbox" id="remember_me" name='remember'>
                         <label for="remember_me">Запомнить меня</label>
 

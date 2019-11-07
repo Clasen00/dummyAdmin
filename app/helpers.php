@@ -13,7 +13,7 @@ function render($view, array $data = [])
 {
     extract($data);
     
-    $file = str_replace('\\', '/', ROOT . '/dummyAdmin/app/views/partials/' . $view . '.php');
+    $file = str_replace('\\', '/', APP . '/views/partials/' . $view . '.php');
     
     if (is_readable($file)) {
         require_once $file;
