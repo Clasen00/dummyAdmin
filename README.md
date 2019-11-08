@@ -15,3 +15,19 @@ To run it just add something like this in your xampp\apache\conf\extra:
 
 also, add `127.0.0.1  dummyadmin` to your hosts file.
 
+To make your db.php work you need to add in app->database file databaseConfig.php It should looks something like this
+
+```
+<?php
+
+namespace app\database;
+
+class DatabaseConfig
+{
+    public static $dsn = 'mysql:dbname=YOURDBNAME;host=localhost';
+    public static $user = 'USER';
+    public static $pass = 'PASSWORD';
+
+}
+```
+
