@@ -69,7 +69,7 @@ class DB extends DatabaseConfig
     /**
      * Получение строки из таблицы.
      */
-    public static function getRow($query, $param = array()): array
+    public static function getRow($query, $param = array())
     {
         self::$sth = self::getDbh()->prepare($query);
         self::$sth->execute((array) $param);

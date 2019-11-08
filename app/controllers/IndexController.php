@@ -14,10 +14,16 @@ class IndexController extends Controller
     {
         session_start();
         $user = $this->model('User');
-        
+        $needLogOut = filter_input(INPUT_GET, 'needlogout');
         $dontRegisterd = false;
         
-        $this->setUserCookie($_SESSION['userSession']['userId'], $this->secondsInDay);
+        if ($needLogOut) {
+            $this->logout();
+        }
+        
+        if (!empty($_SESSION['userSession']['userId'])) {
+            Controller::setUserCookie($_SESSION['userSession']['userId'], time() + $this->secondsInDay);
+        }
         
         $userId = filter_input(INPUT_COOKIE, 'userId');
         
@@ -33,7 +39,7 @@ class IndexController extends Controller
             }
         }
         else {
-            $this->view('home', ['title' => $user->login(), 'dontRegisterd' => $dontRegisterd]);
+            $this->view('home', ['dontRegisterd' => $dontRegisterd]);
         }
     }
 
@@ -51,8 +57,8 @@ class IndexController extends Controller
         $userId = $user->registrationUser($requestPost);
         
         $this->setIsAuth(true);
-        $this->setUserCookie($userId, $this->secondsInDay);
-        $this->setUserSession($userId);
+        Controller::setUserCookie($userId, time() + $this->secondsInDay);
+        Controller::setUserSession($userId, $this->isAuth);
         
         return json_encode([$validetedData]);
     }
@@ -65,6 +71,9 @@ class IndexController extends Controller
         $user->email = $requestPost['email'];
         $user->password = $requestPost['password'];
         $rememberMe = $requestPost['remember'];
+        $notAuth = [];
+        $notAuth['message'] = "Неправильный логин или пароль";
+        $notAuth['isValidated'] = false;
 
         $validetedData = $user->validateUser($requestPost);
         
@@ -74,29 +83,31 @@ class IndexController extends Controller
         
         $authorizedUser = $user->getRegisteredUser();
 
-        if (!empty($authorizedUser)) {
+        if ($authorizedUser) {
             $this->setUserAuthParam($authorizedUser, $rememberMe);
+        } else {
+            return json_encode([$notAuth]);
         }
 
         return json_encode([$validetedData]);
     }
     
-    public function setUserAuthParam(array $user, $rememberMe)
-    {
-        $this->setIsAuth(true);
-        $this->setUserSession($user['id']);
-
-        if (!empty($rememberMe)) {
-            $this->setUserCookie($user['id'], $this->secondsInWeek);
-        }
-        else {
-            $this->setUserCookie($user['id'], $this->secondsInDay);
-        }
+    public function logout () {
+        unset($_SESSION['userSession']);
+        setcookie("userId", "", time() - 23489321, "/");
     }
 
-    public function setUserCookie(int $userId, int $cookieExpiredTime)
+        public function setUserAuthParam(array $user, $rememberMe)
     {
-        setcookie('userId', $userId, time() + $cookieExpiredTime);
+        $this->setIsAuth(true);
+        Controller::setUserSession($user['id'], $this->isAuth);
+
+        if (!empty($rememberMe)) {
+            Controller::setUserCookie($user['id'], time() + $this->secondsInWeek);
+        }
+        else {
+            Controller::setUserCookie($user['id'], time() + $this->secondsInDay);
+        }
     }
     
     public function getIsAuth(): bool
@@ -109,11 +120,4 @@ class IndexController extends Controller
         $this->isAuth = $isAuth;
     }
     
-    public function setUserSession(int $userId)
-    {
-        if ($_SESSION['userSession']['userId'] !== $userId || !isset($_SESSION['userSession']['userId'])) {
-            $_SESSION['userSession']['userId'] = $userId;
-            $_SESSION['userSession']['loggedin'] = $this->isAuth;
-        }
-    }
 }

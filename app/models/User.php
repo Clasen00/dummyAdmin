@@ -66,7 +66,7 @@ class User extends DB {
         return $validated;
     }
     
-    public function getRegisteredUser(): array
+    public function getRegisteredUser()
     {
         $user = DB::getRow("SELECT * FROM `user` WHERE `email` = :email AND `password` = :password", ['email' => $this->email, 'password' => $this->password]);
 

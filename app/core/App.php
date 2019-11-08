@@ -123,7 +123,8 @@ class App extends \app\core\Base
     private function setParams()
     {
         $postRequest = filter_input_array(INPUT_POST);
+        $getRequest = filter_input_array(INPUT_GET);
         
-        $this->params = $this->url ? [array_values($this->url), $postRequest] : [$postRequest];
+        $this->params = $this->url ? [array_values($this->url), $postRequest, $getRequest] : [$postRequest];
     }
 }

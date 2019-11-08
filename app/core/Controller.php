@@ -53,7 +53,7 @@ class Controller extends \app\core\Base
     /**
      * Redirecting to $url
      *
-     * @param tring $url
+     * @param string $url
      */
     public static function redirect(string $url)
     {
@@ -61,6 +61,31 @@ class Controller extends \app\core\Base
         header('Location: ' . $url);
         ob_end_flush();
         die();
+    }
+    
+    /**
+     * Setting user cookies for $userId and for time in $cookieExpiredTime
+     *
+     * @param int $userId
+     * @param int $cookieExpiredTime
+     */
+    public static function setUserCookie(int $userId, int $cookieExpiredTime)
+    {
+        setcookie('userId', $userId, $cookieExpiredTime, '/');
+    }
+    
+    /**
+     * Setting user session settings for $userId
+     *
+     * @param int $userId
+     * @param bool $isAuth
+     */
+    public static function setUserSession(int $userId, bool $isAuth)
+    {
+        if ($_SESSION['userSession']['userId'] !== $userId || !isset($_SESSION['userSession']['userId'])) {
+            $_SESSION['userSession']['userId'] = $userId;
+            $_SESSION['userSession']['loggedin'] = $isAuth;
+        }
     }
     
 }
