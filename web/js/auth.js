@@ -36,19 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
             var formData = getRegFormData(regForm);
         }
 
-        let response = fetch('/index/register', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-            },
-            body: formData,
-        })
-        .then((response) => {
-          response.json()
-            .then((json) => {
-              processRequest(json, 'regFormNotFull');
-            });
-        });
+        makeRequest('/index/register', formData, 'regFormNotFull');
         
     });
     
@@ -66,7 +54,12 @@ document.addEventListener("DOMContentLoaded", () => {
             var formData = getAuthFormData(authForm);
         }
 
-        let response = fetch('/index/auth', {
+        makeRequest('/index/auth', formData, 'authFormNotFull');
+
+    });
+    
+    function makeRequest (url, formData, placeholderIfNotFull) {
+        let response = fetch(url, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -76,11 +69,10 @@ document.addEventListener("DOMContentLoaded", () => {
         .then((response) => {
           response.json()
             .then((json) => {
-                processRequest(json, 'authFormNotFull');
+                processRequest(json, placeholderIfNotFull);
             })
         });
-
-    });
+    }
 
     function isRegFormEmpy(formData) {
         return !formData.firstName.value

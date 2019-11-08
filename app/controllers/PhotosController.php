@@ -21,5 +21,16 @@ class PhotosController extends Controller
 
         $this->view('photo', ['currentUser' => $currentUser]);
     }
+    
+    public function upload()
+    {
+        $requestPost = filter_input_array(INPUT_POST);
+        
+        $response = [];
+        $response['message'] = "Фотографии загружены куда надо!";
+//        $response['isValidated'] = false;
+        
+        return json_encode([$response]);
+    }
 
 }
