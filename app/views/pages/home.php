@@ -28,7 +28,7 @@
                     <div id="regFormEmpty" class="form-warning hidden">Пожалуйста, заполните форму регистрации!</div>
                     <div id="regFormNotFull" class="form-warning hidden"></div>
                     <?php if($dontRegisterd): ?>
-                        <div id="regFormEmpty" class="form-warning">Что то пошло не так во время регистрации, попробуйте еще раз!</div>
+                        <div class="form-warning">Что то пошло не так во время регистрации, попробуйте еще раз!</div>
                     <?php endif; ?>
                 </div><!--.signup-tab-content-->
 
@@ -44,6 +44,7 @@
                 </div><!--.login-tab-content-->
             </div><!--.tabs-content-->
             <div id="authFormEmpty" class="form-warning hidden">Пожалуйста, заполните форму авторизации!</div>
+            <div id="authFormNotFull" class="form-warning hidden"></div>
         </div><!--.form-wrap-->
          <script type="text/javascript">
              <?= file_get_contents(ROOT . '/dummyAdmin/web/js/auth.js'); ?>

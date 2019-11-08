@@ -8,10 +8,14 @@ class PhotosController extends Controller
 {
     public function index()
     {
+        if (!$_SESSION['userSession']['loggedin']) {
+            Controller::redirect('http://dummyadmin/index');
+        }
+        
         $user = $this->model('User');
+        $userId = $_SESSION['userSession']['userId'];
+        $currentUser = $user->getUser($userId);
         
-        var_dump($_SESSION); exit;
-        
-        $this->view('photo', ['title' => $user->login()]);
+        $this->view('photo', ['currentUser' => $currentUser]);
     }
 }

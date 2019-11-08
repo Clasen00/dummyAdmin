@@ -14,6 +14,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const targetPath = event.target.getAttribute('href');
             document.querySelector(".tabs-content div[id='" + targetPath.substr(1) + "']").classList.add('active');
+            
+            //hidden any notice when form changing
+            hideWarnings();
         });
     });
 
@@ -43,14 +46,8 @@ document.addEventListener("DOMContentLoaded", () => {
         .then((response) => {
           response.json()
             .then((json) => {
-              const responseMessage = json[0].message
-              const responseIsValidated = json[0].isValidated
-              if (responseIsValidated) {
-                  window.location.href = "http://dummyadmin/index";
-              } else {
-                  noticeUser(responseMessage);
-              }
-            })
+              processRequest(json, 'regFormNotFull');
+            });
         });
         
     });
@@ -66,19 +63,22 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         } else {
             document.getElementById('authFormEmpty').classList.add('hidden');
-            let formData = getAuthFormToJson(authForm);
+            var formData = getAuthFormData(authForm);
         }
 
-        try {
-            let response = fetch('/index/authUser', {
-                method: 'POST',
-                body: formData
+        let response = fetch('/index/auth', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+            },
+            body: formData,
+        })
+        .then((response) => {
+          response.json()
+            .then((json) => {
+                processRequest(json, 'authFormNotFull');
             })
-                    .then(response => console.log(response));
-
-        } catch (error) {
-            console.error('Ошибка:', error);
-        }
+        });
 
     });
 
@@ -103,15 +103,41 @@ document.addEventListener("DOMContentLoaded", () => {
 
         return formData;
     }
+    
+    function getAuthFormData(authForm) {
+        var formData = new FormData();
+        formData.append('email', authForm.email.value);
+        formData.append('password', authForm.password.value);
+        formData.append('remember', authForm.remember.value);
 
-    function getAuthFormToJson(authForm) {
-        return JSON.stringify({email: authForm.email.value, password: authForm.password.value});
+        return formData;
+    }
+    
+    function processRequest(json, placeHolderId) {
+        const responseMessage = json[0].message;
+        const responseIsValidated = json[0].isValidated;
+        
+        if (responseIsValidated) {
+            window.location.href = "http://dummyadmin/index";
+        } else {
+            noticeUser(responseMessage, placeHolderId);
+        }
     }
 
-    function noticeUser(message) {
-        var regFormNotFull = document.getElementById('regFormNotFull');
-        regFormNotFull.innerHTML = message;
-        regFormNotFull.classList.remove('hidden');
+    function noticeUser(message, placeHolderId) {
+        var formNotFull = document.getElementById(placeHolderId);
+        formNotFull.innerHTML = message;
+        formNotFull.classList.remove('hidden');
+    }
+    
+    function hideWarnings() {
+        let warnings = document.getElementsByClassName('form-warning');
+        
+        Array.from(warnings).forEach(warning => {
+            if (!warning.classList.contains('hidden')) {
+                warning.classList.add('hidden');
+            }
+        });
     }
 });
 

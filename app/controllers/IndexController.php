@@ -17,6 +17,8 @@ class IndexController extends Controller
         
         $dontRegisterd = false;
         
+        $this->setUserCookie($_SESSION['userSession']['userId'], $this->secondsInDay);
+        
         $userId = filter_input(INPUT_COOKIE, 'userId');
         
         if (!empty($userId)) {
@@ -24,10 +26,7 @@ class IndexController extends Controller
             $currentUser = $user->getUser($userId);
             
             if (!empty($currentUser)) {
-                ob_start();
-                header('Location: http://dummyadmin/photos');
-                ob_end_flush();
-                die();
+                Controller::redirect('http://dummyadmin/photos');
             }
             else {
                 $dontRegisterd = true;
@@ -44,7 +43,7 @@ class IndexController extends Controller
         
         $requestPost = filter_input_array(INPUT_POST);
         
-        $validetedData = $user->validateUser($requestPost);
+        $validetedData = $user->validateUser($requestPost, true);
         
         if ($validetedData['isValidated'] !== true) {
             return json_encode([$validetedData]);
@@ -58,12 +57,48 @@ class IndexController extends Controller
         return json_encode([$validetedData]);
     }
 
-    public function setUserSession(int $userId)
-    {//TODO многомерный массив
-        if (!isset($_SESSION['userSession']['userId'])) $_SESSION['userSession']['userId'] = $userId;
-        if (!isset($_SESSION['userSession']['loggedin'])) $_SESSION['userSession']['loggedin'] = $this->isAuth;
+    public function auth()
+    {
+        $requestPost = filter_input_array(INPUT_POST);
+        
+        $user = $this->model('User');
+        $user->email = $requestPost['email'];
+        $user->password = $requestPost['password'];
+        $rememberMe = $requestPost['remember'];
+
+        $validetedData = $user->validateUser($requestPost);
+        
+        if ($validetedData['isValidated'] !== true) {
+            return json_encode([$validetedData]);
+        }
+        
+        $authorizedUser = $user->getRegisteredUser();
+
+        if (!empty($authorizedUser)) {
+            $this->setUserAuthParam($authorizedUser, $rememberMe);
+        }
+
+        return json_encode([$validetedData]);
+    }
+    
+    public function setUserAuthParam(array $user, $rememberMe)
+    {
+        $this->setIsAuth(true);
+        $this->setUserSession($user['id']);
+
+        if (!empty($rememberMe)) {
+            $this->setUserCookie($user['id'], $this->secondsInWeek);
+        }
+        else {
+            $this->setUserCookie($user['id'], $this->secondsInDay);
+        }
     }
 
+    public function setUserCookie(int $userId, int $cookieExpiredTime)
+    {
+        setcookie('userId', $userId, time() + $cookieExpiredTime);
+    }
+    
     public function getIsAuth(): bool
     {
         return $this->isAuth;
@@ -73,35 +108,12 @@ class IndexController extends Controller
     {
         $this->isAuth = $isAuth;
     }
-
-    public function authUser()
+    
+    public function setUserSession(int $userId)
     {
-        $requestPost = filter_input_array(INPUT_POST);
-
-        $user = $this->model('User');
-        $user->email = $requestPost['email'];
-        $user->password = $requestPost['password'];
-        $rememberMeChecked = $requestPost['remember'];
-
-        $authorizedUser = $user->getRegisteredUser();
-
-        if (!empty($authorizedUser)) {
-            $this->setIsAuth(true);
-            $this->setUserSession($authorizedUser['id']);
-
-            if (isset($rememberMeChecked)) {
-                $this->setUserCookie($authorizedUser['id'], $this->secondsInWeek);
-            }
-            else {
-                $this->setUserCookie($authorizedUser['id'], $this->secondsInDay);
-            }
+        if ($_SESSION['userSession']['userId'] !== $userId || !isset($_SESSION['userSession']['userId'])) {
+            $_SESSION['userSession']['userId'] = $userId;
+            $_SESSION['userSession']['loggedin'] = $this->isAuth;
         }
-
-        return json_encode([$authorizedUser]);
-    }
-
-    public function setUserCookie(int $userId, int $cookieExpiredTime)
-    {
-        setcookie('userId', $userId, time() + $cookieExpiredTime);
     }
 }

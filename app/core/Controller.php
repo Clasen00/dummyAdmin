@@ -49,4 +49,18 @@ class Controller extends \app\core\Base
             $this->respondNotFound();
         }
     }
+    
+    /**
+     * Redirecting to $url
+     *
+     * @param tring $url
+     */
+    public static function redirect(string $url)
+    {
+        ob_start();
+        header('Location: ' . $url);
+        ob_end_flush();
+        die();
+    }
+    
 }

@@ -42,7 +42,7 @@ class User extends DB {
         return $insertUserId;
     }
 
-    public function validateUser(array $userData)
+    public function validateUser(array $userData, bool $isReg = false): array
     {
         
         $validated = [];
@@ -53,7 +53,7 @@ class User extends DB {
             $validated['isValidated'] = false;
             $validated['message'] = "Введите электронную почту";
             return $validated;
-        } elseif (!$userData['firstName']) {
+        } elseif ($isReg && !$userData['firstName']) {
             $validated['isValidated'] = false;
             $validated['message'] = "Введите имя";
             return $validated;
