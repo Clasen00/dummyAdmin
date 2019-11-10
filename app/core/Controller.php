@@ -82,7 +82,7 @@ class Controller extends \app\core\Base
      */
     public static function setUserSession(int $userId, bool $isAuth)
     {
-        if ($_SESSION['userSession']['userId'] !== $userId || !isset($_SESSION['userSession']['userId'])) {
+        if (empty($_SESSION['userSession']) || $_SESSION['userSession']['userId'] !== $userId) {
             $_SESSION['userSession']['userId'] = $userId;
             $_SESSION['userSession']['loggedin'] = $isAuth;
         }

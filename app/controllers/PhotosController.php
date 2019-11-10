@@ -12,7 +12,7 @@ class PhotosController extends Controller
     {
         $this->userId = filter_input(INPUT_COOKIE, 'userId');
 
-        if (!$_SESSION['userSession']['loggedin'] && !$this->userId) {
+        if (empty($_SESSION['userSession']) && !$this->userId) {
             $this->redirect('http://dummyadmin/index');
         }
 

@@ -48,5 +48,8 @@
             </section>
 
         </main>
+        <script type="text/javascript">
+             <?= file_get_contents(ROOT . '/dummyAdmin/web/js/photoredactor.js'); ?>
+        </script>
     </body>
 </html>

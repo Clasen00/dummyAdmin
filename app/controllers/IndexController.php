@@ -12,7 +12,6 @@ class IndexController extends Controller
 
     public function index()
     {
-        session_start();
         $user = $this->model('User');
         $needLogOut = filter_input(INPUT_GET, 'needlogout');
         $dontRegisterd = false;
@@ -21,7 +20,7 @@ class IndexController extends Controller
             $this->logout();
         }
         
-        if (!empty($_SESSION['userSession']['userId'])) {
+        if (!empty($_SESSION['userSession'])) {
             Controller::setUserCookie($_SESSION['userSession']['userId'], time() + $this->secondsInDay);
         }
         
