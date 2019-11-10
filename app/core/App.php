@@ -88,6 +88,9 @@ class App extends \app\core\Base
             $this->url[0] = 'index';
         }
         
+        $this->url[0] = explode('?', $this->url[0])[0];
+        $this->url[0] = ucfirst($this->url[0]);
+        
         $path = str_replace('\\', '/', APP . '/controllers/' . $this->url[0] . 'Controller.php');
         
         if (file_exists($path)) {
