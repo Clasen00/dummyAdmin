@@ -24,11 +24,15 @@ class PhotosController extends Controller
     
     public function upload()
     {
-        $requestPost = filter_input_array(INPUT_POST);
+        $files = $_FILES;
         
         $response = [];
         $response['message'] = "Фотографии загружены куда надо!";
 //        $response['isValidated'] = false;
+        
+        if (empty($files['upload'])) {
+            $response['message'] = "Нет фото для сохранения";
+        }
         
         return json_encode([$response]);
     }
