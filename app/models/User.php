@@ -49,9 +49,9 @@ class User extends DB {
         $validated['message'] = "Вы успешно зарегистрировались";
         $validated['isValidated'] = true;
         
-        if (!$userData['email']) {
+        if (!filter_var($userData['email'], FILTER_VALIDATE_EMAIL) || !$userData['email']) {
             $validated['isValidated'] = false;
-            $validated['message'] = "Введите электронную почту";
+            $validated['message'] = "Введите корректную электронную почту";
             return $validated;
         } elseif ($isReg && !$userData['firstName']) {
             $validated['isValidated'] = false;
