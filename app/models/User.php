@@ -22,11 +22,6 @@ class User extends DB {
     public $secondName;
     public $password;
 
-    public function login(): string
-    {
-        return 'You have been successfully logged!';
-    }
-
     public function getUser(int $userId): array
     {
         $user = DB::getRow("SELECT * FROM `user` WHERE `id` = :id", ['id' => $userId]);
@@ -75,8 +70,8 @@ class User extends DB {
     
     public function registrationUser(array $userFromData):int
     {
-        $this->firstName = $userFromData['firstName'];
-        $this->secondName = $userFromData['secondName'];
+        $this->firstName = htmlentities($userFromData['firstName']);
+        $this->secondName = htmlentities($userFromData['secondName']);
         $this->email = $userFromData['email'];
         $this->password = $userFromData['password'];
         
