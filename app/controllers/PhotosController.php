@@ -27,11 +27,13 @@ class PhotosController extends Controller
         $files = $_FILES;
         
         $response = [];
-        $response['message'] = "Фотографии загружены куда надо!";
-//        $response['isValidated'] = false;
-        
+        $response['message'] = '';
+
         if (empty($files['upload'])) {
-            $response['message'] = "Нет фото для сохранения";
+            $response['message'] = 'Нет фото для сохранения';
+        } else {
+            $article = $this->model('Article');
+            $response['message'] = $article->saveUserPhotos($files);
         }
         
         return json_encode([$response]);
