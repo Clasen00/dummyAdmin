@@ -22,7 +22,7 @@ class PhotosController extends Controller
         $this->view('photo', ['currentUser' => $currentUser]);
     }
     
-    public function upload()
+    public function upload() :string
     {
         $files = $_FILES;
         

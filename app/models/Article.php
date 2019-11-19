@@ -12,25 +12,59 @@ use app\database\DB;
  * @property integer $cdate
  */
 class Article extends DB {
-    
-    const MAX_PHOTO_SIZE = 15000000;
 
-    public function saveUserPhotos($files) {
+    const PHOTO_SIZE_15MB = 15000000;
+
+    public function saveUserPhotos(array $files) {
         $photos = $files['uploads'];
-        
+
         $response = 'Фото сохранены успешно';
 
         foreach ($photos as $index => $photo) {
-            if ($photo['size'] >= self::MAX_PHOTO_SIZE) {
-                return $response = 'Превышен максимально допустимый размер фото 100 мб. Уменьшите размер фото, либо загрузите другое';
-            } elseif ($photo['error'] !== UPLOAD_ERR_OK) {
-                return $response = 'Возникла ошибка при загрузке фото';
+
+            if ($this->validatePhoto($photo)) {
+                return $this->validatePhoto($photo);
             }
-            
-            //сохранить фото
+
+            $this->uploadPhotoOnServer($photo);
         }
-        
-    return $response;
+
+        return $response;
+    }
+
+    protected function isPhotoLoaded(array $photo) {
+        $response = '';
+        $photoNotLoaded = false;
+
+        if ($photo['size'] >= self::PHOTO_SIZE_15MB) {
+            return $response = 'Превышен максимально допустимый размер фото 100 мб. Уменьшите размер фото, либо загрузите другое';
+        } elseif ($photo['error'] !== UPLOAD_ERR_OK) {
+            return $response = 'Возникла ошибка при загрузке фото';
+        }
+
+        return $photoNotLoaded;
+    }
+
+    protected function uploadPhotoOnServer(array $photo) {
+        // Достаем формат изображения
+        $imageFormat = explode('.', $photo['name'])[1];
+
+        // Генерируем новое имя для изображения. Можно сохранить и со старым
+        // но это не рекомендуется делать
+        $imageFullName = './images/' . hash('crc32', time()) . '.' . $imageFormat;
+
+        // Сохраняем тип изображения в переменную
+        $imageType = $photo['type'];
+
+        // Сверяем доступные форматы изображений, если изображение соответствует,
+        // копируем изображение в папку images
+        if ($imageType == 'image/jpeg' || $imageType == 'image/png') {
+            if (move_uploaded_file($photo['tmp_name'], $imageFullName)) {
+                echo 'success';
+            } else {
+                echo 'error';
+            }
+        }
     }
 
 }
