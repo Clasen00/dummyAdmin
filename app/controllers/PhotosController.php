@@ -17,6 +17,7 @@ class PhotosController extends Controller
         }
 
         $user = $this->model('User');
+        
         $currentUser = $user->getUser($this->userId);
 
         $this->view('photo', ['currentUser' => $currentUser]);
@@ -26,6 +27,8 @@ class PhotosController extends Controller
     {
         $files = $_FILES;
         
+        $userId = filter_input(INPUT_COOKIE, 'userId');
+        
         $response = [];
         $response['message'] = '';
 
@@ -33,7 +36,7 @@ class PhotosController extends Controller
             $response['message'] = 'Нет фото для сохранения';
         } else {
             $article = $this->model('Article');
-            $response['message'] = $article->saveUserPhotos($files);
+            $response['message'] = $article->saveUserPhotos($files, $userId);
         }
         
         return json_encode([$response]);
