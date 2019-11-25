@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\database\DB;
+use app\models\Photos;
 
 /**
  * This is the model class for table "Article".
@@ -19,24 +20,25 @@ class Article extends DB {
 
     public function saveArticle(int $userId): int {
 
-        $insertArticleId = DB::add("INSERT INTO `article` SET `author_id` = :author_id, `cdate` = :cdate", ['author_id' => $userId, 'cdate' => time()]);
+        $articleId = DB::add("INSERT INTO `article` SET `author_id` = :author_id, `cdate` = :cdate", ['author_id' => $userId, 'cdate' => time()]);
 
-        $this->articleId = $insertArticleId;
+        return $articleId;
     }
 
     public function saveUserPhotos(array $files, int $userId) {
-        $photos = $files['upload'];
+        $inputPhotos = $files['upload'];
 
         $response = 'Фото сохранены успешно';
 
-        foreach ($photos as $index => $photo) {
+        foreach ($inputPhotos as $photo) {
 
             if ($this->isPhotoLoaded($photo)) {
                 return $this->isPhotoLoaded($photo);
             }
+        var_dump($inputPhotos); exit;
 
-            $this->saveArticle($photo, $userId);
-            $this->uploadPhotoOnServer($photo, $userId);
+            $articleId = $this->saveArticle($userId);
+            $this->uploadPhotoOnServer($photo, $articleId, $userId);
         }
 
         return $response;
@@ -49,33 +51,38 @@ class Article extends DB {
         if ($photo['size'] >= self::PHOTO_SIZE_15MB) {
             return $response = 'Превышен максимально допустимый размер фото 100 мб. Уменьшите размер фото, либо загрузите другое';
         } elseif ($photo['error'] !== UPLOAD_ERR_OK) {
-            return $response = 'Возникла ошибка при загрузке фото';
+            return $response = $photo['error'];
         }
 
         return $photoNotLoaded;
     }
 
-    protected function uploadPhotoOnServer(array $photo, int $userId) {
+    protected function uploadPhotoOnServer(array $photo, int $articleId, int $userId) {
         // Достаем формат изображения
         $imageFormat = explode('.', $photo['name'])[1];
 
         // Генерируем новое имя для изображения. Можно сохранить и со старым
         // но это не рекомендуется делать
 
-        $path = PROJECT . '/files/images/' . ceil($this->articleId / 1000) . '/';
+        $path = PROJECT . '/files/images/' . ceil($articleId / 1000) . '/';
         if (!file_exists($path)) {
             mkdir($path, 0777, true);
         }
-        $imageFullName = $path . $userId . '/' . $this->articleId . '.' . $imageFormat;
+        $imageFullName = $path . $userId . '/' . $articleId . '.' . $imageFormat;
 
         // Сохраняем тип изображения в переменную
         $photoType = $photo['type'];
 
         // Сверяем доступные форматы изображений, если изображение соответствует,
         // копируем изображение в папку images
+        
         if ($this->isAllowedPhotoType($photoType)) {
             move_uploaded_file($photo['tmp_name'], $imageFullName);
         }
+        
+        $photosModel = $this->model('Photos');
+        $photosModel->savePhoto($articleId, $imageFullName);
+
     }
 
     public function isAllowedPhotoType($photoType) {

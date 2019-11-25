@@ -13,10 +13,9 @@ use app\database\DB;
  * @property integer $email
  * @property integer $password
  */
-class User extends DB {
+class User extends DB
+{
 
-    public $title = 'User model';
-    
     public $email;
     public $firstName;
     public $secondName;
@@ -33,17 +32,17 @@ class User extends DB {
     {
 
         $insertUserId = DB::add("INSERT INTO `user` SET `first_name` = :first_name, `second_name` = :second_name, `email` = :email, `password` = :password", ['first_name' => $this->firstName, 'second_name' => $this->secondName, 'email' => $this->email, 'password' => $this->password]);
-        
+
         return $insertUserId;
     }
 
     public function validateUser(array $userData, bool $isReg = false): array
     {
-        
+
         $validated = [];
         $validated['message'] = "Вы успешно зарегистрировались";
         $validated['isValidated'] = true;
-        
+
         if (!filter_var($userData['email'], FILTER_VALIDATE_EMAIL) || !$userData['email']) {
             $validated['isValidated'] = false;
             $validated['message'] = "Введите корректную электронную почту";
@@ -57,26 +56,26 @@ class User extends DB {
             $validated['message'] = "Введите пароль";
             return $validated;
         }
-        
+
         return $validated;
     }
-    
+
     public function getRegisteredUser()
     {
         $user = DB::getRow("SELECT * FROM `user` WHERE `email` = :email AND `password` = :password", ['email' => $this->email, 'password' => $this->password]);
 
         return $user;
     }
-    
-    public function registrationUser(array $userFromData):int
+
+    public function registrationUser(array $userFromData): int
     {
         $this->firstName = htmlentities($userFromData['firstName']);
         $this->secondName = htmlentities($userFromData['secondName']);
         $this->email = $userFromData['email'];
         $this->password = $userFromData['password'];
-        
+
         $userId = $this->setUser();
-        
+
         return $userId;
     }
 
