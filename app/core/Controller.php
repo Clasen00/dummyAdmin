@@ -5,6 +5,13 @@ namespace app\core;
 class Controller extends \app\core\Base
 {
 
+    public $userId;
+
+    public function __construct()
+    {
+        $this->userId = $this->getCurrentUserId();
+    }
+
     /**
      * Return a new instance of a model or throw an exception.
      *
@@ -15,12 +22,12 @@ class Controller extends \app\core\Base
     public function model($model)
     {
         $file = str_replace('\\', '/', APP . '/models/' . $model . '.php');
-        
+
         if (is_readable($file)) {
             require_once $file;
-            
+
             $model = 'app\\models\\' . $model;
-            
+
             return new $model();
         }
 
@@ -39,17 +46,16 @@ class Controller extends \app\core\Base
         $data['view'] = $view;
 
         extract($data);
-        
+
         $file = str_replace('\\', '/', APP . '/views/pages/' . $view . '.php');
 
         if (is_readable($file)) {
             require_once $file;
-        }
-        else {
+        } else {
             $this->respondNotFound();
         }
     }
-    
+
     /**
      * Redirecting to $url
      *
@@ -62,7 +68,7 @@ class Controller extends \app\core\Base
         ob_end_flush();
         die();
     }
-    
+
     /**
      * Setting user cookies for $userId and for time in $cookieExpiredTime
      *
@@ -73,7 +79,7 @@ class Controller extends \app\core\Base
     {
         setcookie('userId', $userId, $cookieExpiredTime, '/');
     }
-    
+
     /**
      * Setting user session settings for $userId
      *
@@ -87,5 +93,10 @@ class Controller extends \app\core\Base
             $_SESSION['userSession']['loggedin'] = $isAuth;
         }
     }
-    
+
+    public function getCurrentUserId() :int
+    {
+        return filter_input(INPUT_COOKIE, 'userId') ?: $_SESSION['userSession']['userId'] ?: 0;
+    }
+
 }

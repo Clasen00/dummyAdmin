@@ -19,15 +19,9 @@ class IndexController extends Controller {
             $this->logout();
         }
 
-        if (!empty($_SESSION['userSession'])) {
-            Controller::setUserCookie($_SESSION['userSession']['userId'], time() + $this->secondsInDay);
-        }
-
-        $userId = filter_input(INPUT_COOKIE, 'userId');
-
-        if (!empty($userId)) {
-
-            $currentUser = $user->getUser($userId);
+        if ($this->userId) {
+            
+            $currentUser = $user->getUser($this->userId);
 
             if (!empty($currentUser)) {
                 Controller::redirect('http://dummyadmin/photos');

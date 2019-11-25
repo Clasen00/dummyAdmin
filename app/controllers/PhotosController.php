@@ -6,17 +6,14 @@ use app\core\Controller;
 
 class PhotosController extends Controller
 {
-    public $userId;
 
     public function index()
     {
-        $this->userId = filter_input(INPUT_COOKIE, 'userId');
-
-        if (empty($_SESSION['userSession']) && !$this->userId) {
+        $user = $this->model('User');
+        
+        if (!$this->userId) {
             $this->redirect('http://dummyadmin/index');
         }
-
-        $user = $this->model('User');
         
         $currentUser = $user->getUser($this->userId);
 
@@ -27,8 +24,6 @@ class PhotosController extends Controller
     {
         $files = $_FILES;
         
-        $userId = filter_input(INPUT_COOKIE, 'userId');
-        
         $response = [];
         $response['message'] = '';
 
@@ -36,7 +31,7 @@ class PhotosController extends Controller
             $response['message'] = 'Нет фото для сохранения';
         } else {
             $article = $this->model('Article');
-            $response['message'] = $article->saveUserPhotos($files, $userId);
+            $response['message'] = $article->saveUserPhotos($files, $this->userId);
         }
         
         return json_encode([$response]);
