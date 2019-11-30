@@ -2,8 +2,8 @@
 
 namespace app\models;
 
-use app\database\DB;
 use app\models\Photos;
+use app\database\DB;
 
 /**
  * This is the model class for table "Article".
@@ -12,54 +12,68 @@ use app\models\Photos;
  * @property integer $author_id
  * @property integer $cdate
  */
-class Article extends DB {
+class Article extends DB
+{
 
     const PHOTO_SIZE_15MB = 15000000;
 
     public $articleId;
+    private $name,
+            $type,
+            $tmpName,
+            $error,
+            $size;
 
-    public function saveArticle(int $userId): int {
+    public function saveArticle(int $userId): int
+    {
 
         $articleId = DB::add("INSERT INTO `article` SET `author_id` = :author_id, `cdate` = :cdate", ['author_id' => $userId, 'cdate' => time()]);
 
         return $articleId;
     }
 
-    public function saveUserPhotos(array $files, int $userId) {
+    public function saveUserPhotos(array $files, int $userId)
+    {
         $inputPhotos = $files['upload'];
 
         $response = 'Фото сохранены успешно';
+        foreach ($inputPhotos['name'] as $index => $value) {
 
-        foreach ($inputPhotos as $photo) {
-
-            if ($this->isPhotoLoaded($photo)) {
-                return $this->isPhotoLoaded($photo);
+            $this->name = $inputPhotos['name'][$index];
+            $this->type = $inputPhotos['type'][$index];
+            $this->tmpName = $inputPhotos['tmp_name'][$index];
+            $this->size = $inputPhotos['size'][$index];
+            $this->error = $inputPhotos['error'][$index];
+            
+            if (!$this->isPhotoNotLoaded()) { //проверки не работают
+                return $this->isPhotoNotLoaded();
             }
-        var_dump($inputPhotos); exit;
-
+            //TODO возвращается неверный articleId, почему то всегда возвращает 1
             $articleId = $this->saveArticle($userId);
-            $this->uploadPhotoOnServer($photo, $articleId, $userId);
+            $this->uploadPhotoOnServer($articleId, $userId);
         }
 
         return $response;
     }
 
-    protected function isPhotoLoaded(array $photo) {
+    protected function isPhotoNotLoaded()
+    {
         $response = '';
-        $photoNotLoaded = false;
+        $photoNotLoaded = true;
 
-        if ($photo['size'] >= self::PHOTO_SIZE_15MB) {
+        if ($this->size >= self::PHOTO_SIZE_15MB) {
             return $response = 'Превышен максимально допустимый размер фото 100 мб. Уменьшите размер фото, либо загрузите другое';
-        } elseif ($photo['error'] !== UPLOAD_ERR_OK) {
-            return $response = $photo['error'];
+        } elseif ($this->error !== UPLOAD_ERR_OK) {
+            return $response = $this->error;
         }
 
         return $photoNotLoaded;
     }
 
-    protected function uploadPhotoOnServer(array $photo, int $articleId, int $userId) {
+    protected function uploadPhotoOnServer(int $articleId, int $userId)
+    {
         // Достаем формат изображения
-        $imageFormat = explode('.', $photo['name'])[1];
+        $imageFormat = explode('.', $this->name)[1];
 
         // Генерируем новое имя для изображения. Можно сохранить и со старым
         // но это не рекомендуется делать
@@ -70,23 +84,20 @@ class Article extends DB {
         }
         $imageFullName = $path . $userId . '/' . $articleId . '.' . $imageFormat;
 
-        // Сохраняем тип изображения в переменную
-        $photoType = $photo['type'];
-
         // Сверяем доступные форматы изображений, если изображение соответствует,
         // копируем изображение в папку images
-        
-        if ($this->isAllowedPhotoType($photoType)) {
-            move_uploaded_file($photo['tmp_name'], $imageFullName);
-        }
-        
-        $photosModel = $this->model('Photos');
-        $photosModel->savePhoto($articleId, $imageFullName);
 
+        if ($this->isAllowedPhotoType()) {
+            move_uploaded_file($this->type, $imageFullName);
+        }
+
+        $photosModel = new Photos();
+        $photosModel->savePhoto($articleId, $imageFullName);
     }
 
-    public function isAllowedPhotoType($photoType) {
-        return $photoType == 'image/jpeg' || $photoType == 'image/png' || $photoType == 'image/jpg' || $photoType == 'image/gif';
+    public function isAllowedPhotoType()
+    {
+        return $this->type == 'image/jpeg' || $this->type == 'image/png' || $this->type == 'image/jpg' || $this->type == 'image/gif';
     }
 
 }
