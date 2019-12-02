@@ -78,17 +78,17 @@ class Article extends DB
         // Генерируем новое имя для изображения. Можно сохранить и со старым
         // но это не рекомендуется делать
 
-        $path = PROJECT . '/files/images/' . ceil($articleId / 1000) . '/';
+        $path = PROJECT . '/files/images/' . ceil($articleId / 1000) . '/' . $userId;
         if (!file_exists($path)) {
             mkdir($path, 0777, true);
         }
-        $imageFullName = $path . $userId . '/' . $articleId . '.' . $imageFormat;
+        $imageFullName = $path . '/' . $articleId . '.' . $imageFormat;
 
         // Сверяем доступные форматы изображений, если изображение соответствует,
         // копируем изображение в папку images
 
         if ($this->isAllowedPhotoType()) {
-            move_uploaded_file($this->type, $imageFullName);
+            move_uploaded_file($this->tmpName, $imageFullName);
         }
 
         $photosModel = new Photos();
