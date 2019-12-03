@@ -48,7 +48,7 @@ class Article extends DB
             if (!$this->isPhotoNotLoaded()) { //проверки не работают
                 return $this->isPhotoNotLoaded();
             }
-            //TODO возвращается неверный articleId, почему то всегда возвращает 1
+            
             $articleId = $this->saveArticle($userId);
             $this->uploadPhotoOnServer($articleId, $userId);
         }
@@ -77,22 +77,23 @@ class Article extends DB
 
         // Генерируем новое имя для изображения. Можно сохранить и со старым
         // но это не рекомендуется делать
-
         $path = PROJECT . '/files/images/' . ceil($articleId / 1000) . '/' . $userId;
         if (!file_exists($path)) {
             mkdir($path, 0777, true);
         }
-        $imageFullName = $path . '/' . $articleId . '.' . $imageFormat;
+        
+        $filename = $articleId . '.' . $imageFormat;
+        
+        $imageFullName = $path . '/' . $filename;
 
         // Сверяем доступные форматы изображений, если изображение соответствует,
         // копируем изображение в папку images
-
         if ($this->isAllowedPhotoType()) {
             move_uploaded_file($this->tmpName, $imageFullName);
         }
 
         $photosModel = new Photos();
-        $photosModel->savePhoto($articleId, $imageFullName);
+        $photosModel->savePhoto($userId, $imageFullName, $filename);
     }
 
     public function isAllowedPhotoType()

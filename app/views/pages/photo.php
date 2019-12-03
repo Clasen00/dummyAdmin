@@ -5,12 +5,12 @@
         <title>Просто админ-панель</title>
         <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, width=device-width">
         <style>
-<?= file_get_contents(PROJECT . '/web/css/photo.css'); ?>
+            <?= file_get_contents(PROJECT . '/web/css/photo.css'); ?>
         </style>
     </head>
     <body>
         <header role="banner">
-            <h1>Просто админ-панель</h1>
+            <h1>Админ-панель</h1>
             <ul class="utilities">
                 <li class="users"><a href="#"><?= $currentUser['first_name'] . ' ' . $currentUser['second_name'] ?></a></li>
                 <li class="logout warn"><a href="/index/?needlogout=1">Выход</a></li>
@@ -32,13 +32,21 @@
                     <form action="#" id="photoLoadForm" method="post" name="photosForm" enctype="multipart/form-data">
                         <div class="upload upload">
                             <div class="upload__wrap" id="previewWrapp">
+                            <?php if (!empty($userPhotos)) :?>
+                                <?php foreach ($userPhotos as $index => $photo) :?>
+                                    <div class='upload__item'>
+                                        <img src="<?= $photo['path'] ?>" class="upload__img" alt=""/>
+                                        <a data-id='<?= $photo['filename'] ?>' class='upload__del'></a>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                                 <div class="upload__btn">
                                     <input class="upload__input" id="uploadPhotos" type="file" name="upload[]" multiple="multiple" data-max-count="4" accept="image/*" />
                                 </div>
                             </div>
                             <div class="upload__mess">
                                 <!--<p class="count_img">Максимальное число фотографий:<strong class="count_img_var">8</strong></p>-->
-                                <p class="size_img">Максимальный размер фотографии:<strong class="size_img_var">5 Mb</strong></p>
+                                <p class="size_img">Максимальный размер фотографии:<strong class="size_img_var">15 Mb</strong></p>
                                 <p class="file_types">Разрешенные типы файлов:<strong class="file_types_var">jpg, png, jpeg, gif</strong></p>
                             </div>
                         </div>
@@ -48,6 +56,7 @@
             </section>
 
         </main>
+        <script src="/web/js/photoredactor.js"></script>
         <script type="text/javascript">
              <?= file_get_contents(ROOT . '/dummyAdmin/web/js/photoredactor.js'); ?>
         </script>

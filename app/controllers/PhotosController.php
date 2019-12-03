@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\core\Controller;
+use app\models\Photos;
 
 class PhotosController extends Controller
 {
@@ -16,8 +17,10 @@ class PhotosController extends Controller
         }
         
         $currentUser = $user->getUser($this->userId);
-
-        $this->view('photo', ['currentUser' => $currentUser]);
+        
+        $userPhotos = Photos::getUserPhoto($this->userId);
+//TODO решить проблему отдачи файлов
+        $this->view('photo', ['currentUser' => $currentUser, 'userPhotos' => $userPhotos]);
     }
     
     public function upload() :string
