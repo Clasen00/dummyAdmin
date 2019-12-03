@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 07, 2019 at 01:06 AM
+-- Generation Time: Dec 03, 2019 at 09:26 AM
 -- Server version: 10.4.6-MariaDB
 -- PHP Version: 7.3.9
 
@@ -33,8 +33,7 @@ USE `blog`;
 CREATE TABLE `article` (
   `id` int(11) NOT NULL,
   `author_id` int(11) NOT NULL,
-  `cdate` int(11) NOT NULL,
-  `photos_id` int(11) NOT NULL
+  `cdate` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -44,8 +43,9 @@ CREATE TABLE `article` (
 --
 
 CREATE TABLE `photos` (
-  `article_id` int(11) NOT NULL,
-  `path` text NOT NULL
+  `user_id` int(11) NOT NULL,
+  `path` text NOT NULL,
+  `filename` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -70,15 +70,13 @@ CREATE TABLE `user` (
 -- Indexes for table `article`
 --
 ALTER TABLE `article`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `get_user` (`author_id`),
-  ADD KEY `get_photos` (`photos_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `photos`
 --
 ALTER TABLE `photos`
-  ADD PRIMARY KEY (`article_id`);
+  ADD PRIMARY KEY (`user_id`);
 
 --
 -- Indexes for table `user`
@@ -101,17 +99,6 @@ ALTER TABLE `article`
 --
 ALTER TABLE `user`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `article`
---
-ALTER TABLE `article`
-  ADD CONSTRAINT `get_photos` FOREIGN KEY (`photos_id`) REFERENCES `photos` (`article_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `get_user` FOREIGN KEY (`author_id`) REFERENCES `user` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
