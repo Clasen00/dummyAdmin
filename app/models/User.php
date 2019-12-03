@@ -21,7 +21,7 @@ class User extends DB
     public $secondName;
     public $password;
 
-    public function getUser(int $userId): array
+    public function getUser(int $userId)
     {
         $user = DB::getRow("SELECT * FROM `user` WHERE `id` = :id", ['id' => $userId]);
 
