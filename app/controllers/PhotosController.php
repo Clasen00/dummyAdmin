@@ -39,5 +39,9 @@ class PhotosController extends Controller
         
         return json_encode([$response]);
     }
-
+    
+    public static function getPhotoUrl(int $articleId, string $filename) :string
+    {
+         return FILES . ceil($articleId/1000)."/" . $filename;
+    }
 }

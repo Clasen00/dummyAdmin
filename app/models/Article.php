@@ -49,8 +49,15 @@ class Article extends DB
                 return $this->isPhotoNotLoaded();
             }
             
-            $articleId = $this->saveArticle($userId);
-            $this->uploadPhotoOnServer($articleId, $userId);
+            // Сверяем доступные форматы изображений, если изображение соответствует,
+            // копируем изображение в папку images
+            if ($this->isAllowedPhotoType()) {
+
+                $articleId = $this->saveArticle($userId);
+                $this->uploadPhotoOnServer($articleId, $userId);
+            }
+            
+
         }
 
         return $response;
@@ -77,23 +84,19 @@ class Article extends DB
 
         // Генерируем новое имя для изображения. Можно сохранить и со старым
         // но это не рекомендуется делать
-        $path = PROJECT . '/files/images/' . ceil($articleId / 1000) . '/' . $userId;
+        $path = PROJECT . '/files/images/' . ceil($articleId / 1000);
         if (!file_exists($path)) {
             mkdir($path, 0777, true);
         }
         
-        $filename = $articleId . '.' . $imageFormat;
+        $filename = $articleId . '_' . $userId . '_' . random_int(0, 1000000000) . '.' . $imageFormat;
         
         $imageFullName = $path . '/' . $filename;
-
-        // Сверяем доступные форматы изображений, если изображение соответствует,
-        // копируем изображение в папку images
-        if ($this->isAllowedPhotoType()) {
-            move_uploaded_file($this->tmpName, $imageFullName);
-        }
-
+        
         $photosModel = new Photos();
-        $photosModel->savePhoto($userId, $imageFullName, $filename);
+        $photosModel->savePhoto($articleId, $userId, $imageFullName, $filename);
+        move_uploaded_file($this->tmpName, $imageFullName);
+
     }
 
     public function isAllowedPhotoType()

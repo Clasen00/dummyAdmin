@@ -4,7 +4,7 @@ session_start();
 define('ROOT', dirname(__DIR__));
 define('PROJECT', dirname(__DIR__) . '/dummyAdmin');
 define('APP', dirname(__DIR__) . '/dummyAdmin/app');
-define('WEB', 'http://dummyadmin');
+define('FILES', 'http://dummyadmin/files/images');
 
 require_once __DIR__ . '/app/helpers.php';
 require __DIR__ . '/vendor/autoload.php';
