@@ -94,7 +94,7 @@ class Article extends DB
         $imageFullName = $path . '/' . $filename;
         
         $photosModel = new Photos();
-        $photosModel->savePhoto($articleId, $userId, $imageFullName, $filename);
+        $photosModel->savePhoto($articleId, $userId, $filename);
         move_uploaded_file($this->tmpName, $imageFullName);
 
     }

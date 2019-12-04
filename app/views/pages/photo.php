@@ -35,7 +35,7 @@
                             <?php if (!empty($userPhotos)) :?>
                                 <?php foreach ($userPhotos as $index => $photo) :?>
                                     <div class='upload__item'>
-                                        <img src="<?= $photo['path'] ?>" class="upload__img" alt=""/>
+                                        <img src="<?= $imgUrls[$index] ?>" class="upload__img" alt=""/>
                                         <a data-id='<?= $photo['filename'] ?>' class='upload__del'></a>
                                     </div>
                                 <?php endforeach; ?>

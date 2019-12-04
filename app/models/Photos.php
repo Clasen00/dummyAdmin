@@ -13,9 +13,9 @@ use app\database\DB;
  */
 class Photos extends DB {
 
-    public function savePhoto(int $articleId, int $userId, string $path, string $filename): int {
+    public function savePhoto(int $articleId, int $userId, string $filename): int {
 
-        $photoId = DB::add("INSERT INTO `photos` SET `article_id` = :article_id, `user_id` = :user_id, `path` = :path, `filename` = :filename", ['article_id' => $articleId, 'user_id' => $userId, 'path' => $path, 'filename' => $filename]);
+        $photoId = DB::add("INSERT INTO `photos` SET `article_id` = :article_id, `user_id` = :user_id, `filename` = :filename", ['article_id' => $articleId, 'user_id' => $userId, 'filename' => $filename]);
 
         return $photoId;
     }

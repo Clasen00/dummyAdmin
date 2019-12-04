@@ -19,8 +19,9 @@ class PhotosController extends Controller
         }
         
         $userPhotos = Photos::getUserPhoto($this->userId);
+        $imgUrls = $this->getPhotoUrls($userPhotos);
 //TODO решить проблему отдачи файлов
-        $this->view('photo', ['currentUser' => $currentUser, 'userPhotos' => $userPhotos]);
+        $this->view('photo', ['currentUser' => $currentUser, 'userPhotos' => $userPhotos, 'imgUrls' => $imgUrls]);
     }
     
     public function upload() :string
@@ -40,8 +41,14 @@ class PhotosController extends Controller
         return json_encode([$response]);
     }
     
-    public static function getPhotoUrl(int $articleId, string $filename) :string
+    public static function getPhotoUrls($userPhotos) :array
     {
-         return FILES . ceil($articleId/1000)."/" . $filename;
+        $imgUrls = [];
+        
+        foreach ($userPhotos as $index => $userPhoto) {
+            $imgUrls[$index] = FILES . '/' . ceil($userPhoto['article_id']/1000)."/" . $userPhoto['filename'];
+        }
+        
+        return $imgUrls;
     }
 }
