@@ -12,11 +12,11 @@ class PhotosController extends Controller
     {
         $user = $this->model('User');
         
-        if (!$this->userId) {
+        $currentUser = $user->getUser($this->userId);
+        
+        if (empty($currentUser)) {
             $this->redirect('http://dummyadmin/index');
         }
-        
-        $currentUser = $user->getUser($this->userId);
         
         $userPhotos = Photos::getUserPhoto($this->userId);
 //TODO решить проблему отдачи файлов
