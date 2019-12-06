@@ -85,7 +85,7 @@ class App extends \app\core\Base
         array_shift($this->url);
         
         if (empty($this->url[0])) {
-            $this->url[0] = 'index';
+            $this->url[0] = $this->method;
         }
         
         $this->url[0] = explode('?', $this->url[0])[0];

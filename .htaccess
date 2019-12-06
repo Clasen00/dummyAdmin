@@ -5,9 +5,14 @@ RewriteBase /
 
 Options -MultiViews
 
+RewriteCond %{REQUEST_URI} ^/(css|js|images)
+RewriteRule ^css/(.*)$ web/css/$1 [L]
+RewriteRule ^js/(.*)$ web/js/$1 [L]
+RewriteRule ^images/(.*)$ files/images/$1 [L]
+
 # Если запрос содержит в конце слеш или расширение .php, то
 # делает редирект без них. Но только для тех запросов, которым 
-# не соотествуют на ФС файл, папка или ссылка  ---> 
+# не соотествуют на ФС файл, папка или ссылка  --->
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-l
@@ -18,6 +23,7 @@ RewriteRule .* %1 [L,R=301]
 # Запросы, для которых нет на ФС папки, файла или ссылки, переписываем 
 # в запрос к index.php, с оригинальным request_uri в качестве аргумента 
 # параметра url --->
+RewriteCond %{REQUEST_URI} !^/(regions/prima/|backend)/web/(assets|css|js)/
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-l
