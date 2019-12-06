@@ -5,6 +5,7 @@ RewriteBase /
 
 Options -MultiViews
 
+RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_URI} ^/(css|js|images)
 RewriteRule ^css/(.*)$ web/css/$1 [L]
 RewriteRule ^js/(.*)$ web/js/$1 [L]
