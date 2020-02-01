@@ -131,13 +131,16 @@ body {
     display: none;
 }
 
-#showPass {
-    left: 63%;
+.show-pass-auth {
     top: 27%;
-    position: absolute;
-    padding: 0;
 }
 
-#need_show_pass {
-    display: none;
+.show-pass-reg {
+    top: 44%;
+}
+
+.show-pass-auth, .show-pass-reg {
+    left: 63%;
+    position: absolute !important;
+    padding: 0;
 }

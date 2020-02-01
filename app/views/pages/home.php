@@ -21,7 +21,9 @@
                         <input type="email" required="" autocomplete="on" class="input" id="user_email" placeholder="Эл. адрес" name="email">
                         <input type="text" required autocomplete="on" class="input" id="first-name" placeholder="Имя" name="firstName">
                         <input type="text" class="input" autocomplete="on" id="second-name" placeholder="Фамилия" name="secondName">
-                        <input type="password" required class="input" id="password" autocomplete="off" placeholder="Пароль" name="password">
+                        <input type="checkbox" class="checkbox hidden" id="need-show-pass-reg" class="need-show-pass">
+                        <label class="show-pass-reg" data-show='true' for="need-show-pass-reg" title="Показать пароль"></label>
+                        <input type="password" required class="input password" id="password" autocomplete="off" placeholder="Пароль" name="password">
                         
                         <input id="regUser" type="submit" class="button" value="Регистрация">
                     </form><!--.login-form-->
@@ -35,9 +37,9 @@
                 <div id="login-tab-content">
                     <form class="login-form" id="authForm" method="post" name="login-form">
                         <input type="text" autocomplete="on" required class="input" id="user_login" placeholder="Эл. адрес" name="email">
-                        <input type="checkbox" class="checkbox" id="need_show_pass">
-                        <label id="showPass" for="need_show_pass" title="Показать пароль"></label>
-                        <input type="password" required autocomplete="on" class="input" id="user_pass" placeholder="Пароль" name="password">
+                        <input type="checkbox" class="checkbox hidden" id="need-show-pass-auth" class="need-show-pass">
+                        <label class="show-pass-auth" data-show='true' for="need-show-pass-auth" title="Показать пароль"></label>
+                        <input type="password" required autocomplete="on" class="input password" id="user_pass" placeholder="Пароль" name="password">
                         <input type="checkbox" class="checkbox" id="remember_me" name='remember'>
                         <label for="remember_me">Запомнить меня</label>
 

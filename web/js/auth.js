@@ -133,15 +133,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     
     function showPassword () {
-        const passwordInput = document.getElementById('user_pass');
-        const showPassBtn = document.getElementById('showPass');
+        const showPassBtns = document.querySelectorAll('[data-show]');
         
-        showPassBtn.addEventListener('click', () => {
-            if (passwordInput.getAttribute('type') === 'password') {
-                passwordInput.setAttribute('type', 'text');
-            } else {
-                passwordInput.setAttribute('type', 'password');
-            }
+        Array.from(showPassBtns).forEach(showPassBtn => {
+            showPassBtn.addEventListener('click', (event) => {
+                
+                let passwordInput = event.target.nextElementSibling;
+                if (!passwordInput.classList.contains('password')) return;
+
+                if (passwordInput.getAttribute('type') === 'password') {
+                    passwordInput.setAttribute('type', 'text');
+                } else {
+                    passwordInput.setAttribute('type', 'password');
+                }
+            });
         });
     };
     
