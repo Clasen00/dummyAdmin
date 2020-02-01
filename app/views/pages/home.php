@@ -35,6 +35,8 @@
                 <div id="login-tab-content">
                     <form class="login-form" id="authForm" method="post" name="login-form">
                         <input type="text" autocomplete="on" required class="input" id="user_login" placeholder="Эл. адрес" name="email">
+                        <input type="checkbox" class="checkbox" id="need_show_pass">
+                        <label id="showPass" for="need_show_pass" title="Показать пароль"></label>
                         <input type="password" required autocomplete="on" class="input" id="user_pass" placeholder="Пароль" name="password">
                         <input type="checkbox" class="checkbox" id="remember_me" name='remember'>
                         <label for="remember_me">Запомнить меня</label>

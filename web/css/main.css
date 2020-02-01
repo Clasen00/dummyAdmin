@@ -130,3 +130,14 @@ body {
 .hidden {
     display: none;
 }
+
+#showPass {
+    left: 63%;
+    top: 27%;
+    position: absolute;
+    padding: 0;
+}
+
+#need_show_pass {
+    display: none;
+}

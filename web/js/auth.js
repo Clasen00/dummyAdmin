@@ -131,5 +131,20 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
+    
+    function showPassword () {
+        const passwordInput = document.getElementById('user_pass');
+        const showPassBtn = document.getElementById('showPass');
+        
+        showPassBtn.addEventListener('click', () => {
+            if (passwordInput.getAttribute('type') === 'password') {
+                passwordInput.setAttribute('type', 'text');
+            } else {
+                passwordInput.setAttribute('type', 'password');
+            }
+        });
+    };
+    
+    showPassword();
 });
 
