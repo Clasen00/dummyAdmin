@@ -131,16 +131,10 @@ body {
     display: none;
 }
 
-.show-pass-auth {
-    top: 27%;
-}
-
-.show-pass-reg {
-    top: 44%;
-}
-
 .show-pass-auth, .show-pass-reg {
-    left: 63%;
-    position: absolute !important;
+    left: 16em;
+    top: 0em;
     padding: 0;
+    height: 1px !important;
+    padding: 0 !important;
 }
